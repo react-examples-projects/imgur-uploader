@@ -12,8 +12,6 @@ import uploadImageData, { deleteImageData, getImages } from "./req/requests";
 import Carrusel from "./components/carrusel/Carrusel";
 
 function App() {
-  const [userClicked, setUserClicked] = useState(false);
-  const imgNode = useRef(null);
   const [description, setDescription] = useState("");
   const inputFileRef = useRef(null);
   const { init, isLoading, isError, data } = useMounted();
@@ -21,10 +19,10 @@ function App() {
   const [images, setImages] = useState([]);
 
   const getAllImages = useCallback(() => {
-    setAction("download")
+    setAction("download");
     init(getImages());
   }, []);
-     
+
   useEffect(() => {
     if (data && action === "download") {
       setImages(data);
@@ -34,7 +32,6 @@ function App() {
     // se vuelve a actualizar los datos en la IU y se resetean estados
     else if (data && (action === "delete" || action === "upload")) {
       getAllImages();
-      setUserClicked(false);
     }
   }, [data, action, getAllImages]);
 
@@ -47,7 +44,7 @@ function App() {
       alert("No there images. Please find a image in your computer.");
       return;
     }
-    setAction("upload")
+    setAction("upload");
     init(
       uploadImageData({
         inputFileRef,
@@ -57,13 +54,8 @@ function App() {
   };
 
   const deleteImage = (id) => {
-    setAction("delete")
+    setAction("delete");
     init(deleteImageData(id));
-  };
-
-  const onClickImage = (link) => {
-    setUserClicked(true);
-    if (imgNode.current) imgNode.current.src = link;
   };
 
   const onClickImageDelete = (id) => {
@@ -83,16 +75,6 @@ function App() {
         </Link>
       </nav>
       {isError && <span>Error de red</span>}
-      <div
-        className={`image-carrusel-container${!userClicked ? " hidden" : ""}`}
-      >
-        <img
-          src=""
-          alt="test"
-          ref={imgNode}
-          className="image image-carrusel-preview"
-        />
-      </div>
 
       <div className="field">
         <input
@@ -120,8 +102,12 @@ function App() {
         disabled={isLoading}
       >
         Subir una imágen
+        <i
+          className="fa fa-cloud-upload-alt"
+          style={{ marginLeft: "10px" }}
+        ></i>
       </button>
-      <Carrusel {...{ onClickImage, onClickImageDelete, images, isLoading, action }} />
+      <Carrusel {...{ onClickImageDelete, images, isLoading, action }} />
     </div>
   );
 }

@@ -35,8 +35,9 @@ body {
 }
 
 .title-principal {
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: bold;
+  margin-bottom: 3rem;
 }
 
 .w-100 {
@@ -141,7 +142,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
@@ -154,6 +155,20 @@ body {
   height: 90%;
   width: 90%;
   object-fit: contain;
+}
+
+.image-carrusel-close{
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-size: 2rem;
+  display: block;
+  position: fixed;
+  top: 31px;
+  right: 118px;
+  cursor: pointer;
+  padding: 1rem;
 }
 
 .carrusel {

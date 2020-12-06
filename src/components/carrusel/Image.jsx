@@ -4,12 +4,12 @@ function Image({
   deletehash,
   link,
   description,
-  onClickImage,
+  onOpenImage,
   onClickImageDelete,
 }) {
   const showImage = (e) => {
     e.stopPropagation();
-    onClickImage(link);
+    onOpenImage(link);
   };
   const deleteImage = () => onClickImageDelete(deletehash);
   return (
