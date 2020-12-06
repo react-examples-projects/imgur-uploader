@@ -17,7 +17,7 @@ function Carrusel({
           overflowX: isLoading ? "hidden" : "auto",
         }}
       >
-        {isLoading && (action == "delete" || action == "upload") && (
+        {isLoading && (action === "delete" || action === "upload") && (
           <div className="carrusel-loader">
             <Loader />
           </div>

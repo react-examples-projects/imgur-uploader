@@ -10,7 +10,6 @@ import "./App.css";
 import useMounted from "./hooks/useMounted";
 import uploadImageData, { deleteImageData, getImages } from "./req/requests";
 import Carrusel from "./components/carrusel/Carrusel";
-import Loader from "./components/loader/Loader";
 
 function App() {
   const [userClicked, setUserClicked] = useState(false);
@@ -19,19 +18,11 @@ function App() {
   const inputFileRef = useRef(null);
   const { init, isLoading, isError, data } = useMounted();
   const [action, setAction] = useState("");
-  const [status, setStatus] = useState("");
   const [images, setImages] = useState([]);
 
-  const setState = (type, text) => {
-    setAction(type);
-    setStatus(text);
-  };
-
   const getAllImages = useCallback(() => {
-    setState("download", "Fetch images...");
-    
+    setAction("download")
     init(getImages());
-    
   }, []);
      
   useEffect(() => {
@@ -56,7 +47,7 @@ function App() {
       alert("No there images. Please find a image in your computer.");
       return;
     }
-    setState("upload", "Subiendo imagen...");
+    setAction("upload")
     init(
       uploadImageData({
         inputFileRef,
@@ -66,7 +57,7 @@ function App() {
   };
 
   const deleteImage = (id) => {
-    setState("delete", "Eliminando imagen...");
+    setAction("delete")
     init(deleteImageData(id));
   };
 
