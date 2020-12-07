@@ -6,10 +6,12 @@ export default function useMounted() {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const isMounted = useRef(true);
+
   const setErrors = (hasError = false, errorDesc = null) => {
     setError(errorDesc);
     setIsError(hasError);
   };
+
   const setState = ({
     hasError = false,
     error = null,

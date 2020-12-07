@@ -14,38 +14,29 @@ import Carrusel from "./components/carrusel/Carrusel";
 function App() {
   const [description, setDescription] = useState("");
   const inputFileRef = useRef(null);
-  const { init, isLoading, isError, data } = useMounted();
-  const [action, setAction] = useState("");
+  const imgReq = useMounted();
+  const imgUpload = useMounted();
+  const imgDelete = useMounted();
   const [images, setImages] = useState([]);
 
   const getAllImages = useCallback(() => {
-    setAction("download");
-    init(getImages());
+    imgReq.init(getImages());
   }, []);
 
   useEffect(() => {
-    if (data && action === "download") {
-      setImages(data);
-      console.log(data);
-    }
-    // si los datos cambian ya sean por eliminacion o subida de imagenes
-    // se vuelve a actualizar los datos en la IU y se resetean estados
-    else if (data && (action === "delete" || action === "upload")) {
-      getAllImages();
-    }
-  }, [data, action, getAllImages]);
+    if (imgReq.data) setImages(imgReq.data);
+  }, [imgReq.data]);
 
   useEffect(() => {
     getAllImages();
-  }, [getAllImages]);
+  }, [getAllImages, imgUpload.data, imgDelete.isLoading]);
 
   const uploadImage = () => {
     if (inputFileRef.current?.files?.length < 1) {
       alert("No there images. Please find a image in your computer.");
       return;
     }
-    setAction("upload");
-    init(
+    imgUpload.init(
       uploadImageData({
         inputFileRef,
         description,
@@ -54,8 +45,8 @@ function App() {
   };
 
   const deleteImage = (id) => {
-    setAction("delete");
-    init(deleteImageData(id));
+    document.querySelector(".carrusel").scroll(0, 0);
+    imgDelete.init(deleteImageData(id));
   };
 
   const onClickImageDelete = (id) => {
@@ -74,7 +65,10 @@ function App() {
           Ir a person
         </Link>
       </nav>
-      {isError && <span>Error de red</span>}
+
+      {(imgReq.isError || imgUpload.isError || imgDelete.isError) && (
+        <h5>Error de red</h5>
+      )}
 
       <div className="field">
         <input
@@ -82,7 +76,9 @@ function App() {
           ref={inputFileRef}
           accept="image/*"
           className="btn btn-grad w-100"
-          disabled={isLoading}
+          disabled={
+            imgReq.isLoading || imgUpload.isLoading || imgDelete.isLoading
+          }
         />
       </div>
 
@@ -99,7 +95,9 @@ function App() {
       <button
         className="btn btn-grad w-100"
         onClick={uploadImage}
-        disabled={isLoading}
+        disabled={
+          imgReq.isLoading || imgUpload.isLoading || imgDelete.isLoading
+        }
       >
         Subir una imágen
         <i
@@ -107,7 +105,13 @@ function App() {
           style={{ marginLeft: "10px" }}
         ></i>
       </button>
-      <Carrusel {...{ onClickImageDelete, images, isLoading, action }} />
+      <Carrusel
+        {...{
+          onClickImageDelete,
+          images,
+          isLoading: imgUpload.isLoading || imgDelete.isLoading,
+        }}
+      />
     </div>
   );
 }

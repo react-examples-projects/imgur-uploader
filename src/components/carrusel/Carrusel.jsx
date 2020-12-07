@@ -2,7 +2,7 @@ import React, { memo, useState, useRef } from "react";
 import Loader from "../loader/Loader";
 import Image from "./Image";
 
-function Carrusel({ onClickImageDelete, images, isLoading, action }) {
+function Carrusel({ onClickImageDelete, images, isLoading }) {
   const [userClicked, setUserClicked] = useState(false);
   const imgNode = useRef(null);
 
@@ -15,7 +15,6 @@ function Carrusel({ onClickImageDelete, images, isLoading, action }) {
     setUserClicked(false);
     if (imgNode.current) imgNode.current.src = "";
   };
-
   return (
     <>
       <div
@@ -37,7 +36,7 @@ function Carrusel({ onClickImageDelete, images, isLoading, action }) {
           overflowX: isLoading ? "hidden" : "auto",
         }}
       >
-        {isLoading && (action === "delete" || action === "upload") && (
+        {isLoading && (
           <div className="carrusel-loader">
             <Loader />
           </div>
